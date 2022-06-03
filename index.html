@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Ferreteria la bodega</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="Free Website Template" name="keywords">
+        <meta content="Free Website Template" name="description">
+
+        <!-- Favicon -->
+        <link href="img/favicon.ico" rel="icon">
+
+        <!-- Google Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+        
+        <!-- CSS Libraries -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
+        <link href="lib/animate/animate.min.css" rel="stylesheet">
+        <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Variables
+            const baseDeDatos = [
+                {
+                    id: 1,
+                    nombre: 'cemento',
+                    precio: 10.25,
+                    imagen: 'cemento.jpg'
+                },
+                {
+                    id: 2,
+                    nombre: 'lamina cal. 26 3 yardas',
+                    precio: 13.50,
+                    imagen: 'descarga (1).jpg'
+                },
+                {
+                    id: 3,
+                    nombre: 'Alambre G.do',
+                    precio: 1.45,
+                    imagen: 'alambre.jpg'
+                },
+                {
+                    id: 4,
+                    nombre: 'lamina cal. 26, 2 yardas',
+                    precio: 9.50,
+                    imagen: 'lamaina 2 yardas.jpg'
+                },
+                {
+                    id: 5,
+                    nombre: '1 mt Arena',
+                    precio: 19,
+                    imagen: 'metrodearena.jpg'
+                },
+                {
+                    id: 6,
+                    nombre: '1 mt arena colada',
+                    precio: 25,
+                    imagen: 'metrodearenacolada.jpg'
+                },
+                {
+                    id: 7,
+                    nombre: 'Ladrillo rojo ',
+                    precio: 0.38,
+                    imagen: 'ladrillorojo.jpg'
+                },
+                {
+                    id: 8,
+                    nombre: 'Arena rustica',
+                    precio: 1.50,
+                    imagen: 'arenacolada.jpg'
+                },
+                {
+                    id: 9,
+                    nombre: 'Arena colada',
+                    precio: 1.75,
+                    imagen: 'arenarustica.jpg'
+                },
+                {
+                    id: 10,
+                    nombre: 'costanera 4 v',
+                    precio: 1.2,
+                    imagen: 'costanera.jpg'
+                },
+                {
+                    id: 11,
+                    nombre: 'varilla 1/2',
+                    precio: 9,
+                    imagen: 'varilla 1.jpg'
+                },
+                {
+                    id: 12,
+                    nombre: 'Varilla 3/8',
+                    precio: 5.90,
+                    imagen: 'hierro.jpg'
+                },
+                {
+                    id: 13,
+                    nombre: '1 mt grava',
+                    precio: 48,
+                    imagen: 'gravame.jpg'
+                },
+                {
+                    id: 14,
+                    nombre: 'saco de grava',
+                    precio: 2.75,
+                    imagen: 'grava.jpg'
+                },
+                {
+                    id: 15,
+                    nombre: 'block 15"',
+                    precio: 0.69,
+                    imagen: '20b.jpg'
+                },
+                {
+                    id: 16,
+                    nombre: 'camisa pvc 1/2',
+                    precio: 0.30,
+                    imagen: 'camisa.jpg'
+                },
+                {
+                    id: 17,
+                    nombre: 'Union T',
+                    precio: 0.40,
+                    imagen: 'uniont.jpg'
+                },
+                {
+                    id: 18,
+                    nombre: 'block 10"',
+                    precio: 0.58,
+                    imagen: 'block10.jpg'
+                },
+                {
+                    id: 19,
+                    nombre: 'codos pvc 1/2',
+                    precio: 0.30,
+                    imagen: 'codo.jpg'
+                },
+                {
+                    id: 20,
+                    nombre: 'cinta aislante',
+                    precio: 0.75,
+                    imagen: 'cinta.jpg'
+                },
+                {
+                    id: 21,
+                    nombre: 'Pala cuadrada',
+                    precio: 10,
+                    imagen: 'pala.jpg'
+                },
+                {
+                    id: 22,
+                    nombre: 'Azadon',
+                    precio: 14.50,
+                    imagen: 'azadon.jpg'
+                },
+                {
+                    id: 23,
+                    nombre: 'piocha',
+                    precio: 19,
+                    imagen: 'piocha.jpg'
+                },
+                {
+                    id: 24,
+                    nombre: 'hacha',
+                    precio: 24,
+                    imagen: 'hacha.jpg'
+                },
+
+            ];
+
+            let carrito = [];
+            const divisa = '$';
+            const DOMitems = document.querySelector('#items');
+            const DOMcarrito = document.querySelector('#carrito');
+            const DOMtotal = document.querySelector('#total');
+            const DOMbotonVaciar = document.querySelector('#boton-vaciar');
+            const miLocalStorage = window.localStorage;
+
+            // Funciones
+
+            /**
+            * Dibuja todos los productos a partir de la base de datos. No confundir con el carrito
+            */
+            function renderizarProductos() {
+                baseDeDatos.forEach((info) => {
+                    // Estructura
+                    const miNodo = document.createElement('div');
+                    miNodo.classList.add('card', 'col-sm-4');
+                    // Body
+                    const miNodoCardBody = document.createElement('div');
+                    miNodoCardBody.classList.add('card-body');
+                    // Titulo
+                    const miNodoTitle = document.createElement('h5');
+                    miNodoTitle.classList.add('card-title');
+                    miNodoTitle.textContent = info.nombre;
+                    // Imagen
+                    const miNodoImagen = document.createElement('img');
+                    miNodoImagen.classList.add('img-fluid');
+                    miNodoImagen.setAttribute('src', info.imagen);
+                    // Precio
+                    const miNodoPrecio = document.createElement('p');
+                    miNodoPrecio.classList.add('card-text');
+                    miNodoPrecio.textContent = `${info.precio}${divisa}`;
+                    // Boton 
+                    const miNodoBoton = document.createElement('button');
+                    miNodoBoton.classList.add('btn', 'btn-primary');
+                    miNodoBoton.textContent = '+';
+                    miNodoBoton.setAttribute('marcador', info.id);
+                    miNodoBoton.addEventListener('click', anyadirProductoAlCarrito);
+                    // Insertamos
+                    miNodoCardBody.appendChild(miNodoImagen);
+                    miNodoCardBody.appendChild(miNodoTitle);
+                    miNodoCardBody.appendChild(miNodoPrecio);
+                    miNodoCardBody.appendChild(miNodoBoton);
+                    miNodo.appendChild(miNodoCardBody);
+                    DOMitems.appendChild(miNodo);
+                });
+            }
+
+            /**
+            * Evento para añadir un producto al carrito de la compra
+            */
+            function anyadirProductoAlCarrito(evento) {
+                // Anyadimos el Nodo a nuestro carrito
+                carrito.push(evento.target.getAttribute('marcador'))
+                // Actualizamos el carrito 
+                renderizarCarrito();
+                // Actualizamos el LocalStorage
+                guardarCarritoEnLocalStorage();
+            }
+
+            /**
+            * Dibuja todos los productos guardados en el carrito
+            */
+            function renderizarCarrito() {
+                // Vaciamos todo el html
+                DOMcarrito.textContent = '';
+                // Quitamos los duplicados
+                const carritoSinDuplicados = [...new Set(carrito)];
+                // Generamos los Nodos a partir de carrito
+                carritoSinDuplicados.forEach((item) => {
+                    // Obtenemos el item que necesitamos de la variable base de datos
+                    const miItem = baseDeDatos.filter((itemBaseDatos) => {
+                        // ¿Coincide las id? Solo puede existir un caso
+                        return itemBaseDatos.id === parseInt(item);
+                    });
+                    // Cuenta el número de veces que se repite el producto
+                    const numeroUnidadesItem = carrito.reduce((total, itemId) => {
+                        // ¿Coincide las id? Incremento el contador, en caso contrario no mantengo
+                        return itemId === item ? total += 1 : total;
+                    }, 0);
+                    // Creamos el nodo del item del carrito
+                    const miNodo = document.createElement('li');
+                    miNodo.classList.add('list-group-item', 'text-right', 'mx-2');
+                    miNodo.textContent = `${numeroUnidadesItem} x ${miItem[0].nombre} - ${miItem[0].precio}${divisa}`;
+                    // Boton de borrar
+                    const miBoton = document.createElement('button');
+                    miBoton.classList.add('btn', 'btn-danger', 'mx-5');
+                    miBoton.textContent = 'X';
+                    miBoton.style.marginLeft = '1rem';
+                    miBoton.dataset.item = item;
+                    miBoton.addEventListener('click', borrarItemCarrito);
+                    // Mezclamos nodos
+                    miNodo.appendChild(miBoton);
+                    DOMcarrito.appendChild(miNodo);
+                });
+                // Renderizamos el precio total en el HTML
+                DOMtotal.textContent = calcularTotal();
+            }
+
+            /**
+            * Evento para borrar un elemento del carrito
+            */
+            function borrarItemCarrito(evento) {
+                // Obtenemos el producto ID que hay en el boton pulsado
+                const id = evento.target.dataset.item;
+                // Borramos todos los productos
+                carrito = carrito.filter((carritoId) => {
+                    return carritoId !== id;
+                });
+                // volvemos a renderizar
+                renderizarCarrito();
+                // Actualizamos el LocalStorage
+                guardarCarritoEnLocalStorage();
+
+            }
+
+            /**
+             * Calcula el precio total teniendo en cuenta los productos repetidos
+             */
+            function calcularTotal() {
+                // Recorremos el array del carrito 
+                return carrito.reduce((total, item) => {
+                    // De cada elemento obtenemos su precio
+                    const miItem = baseDeDatos.filter((itemBaseDatos) => {
+                        return itemBaseDatos.id === parseInt(item);
+                    });
+                    // Los sumamos al total
+                    return total + miItem[0].precio;
+                }, 0).toFixed(2);
+            }
+
+            /**
+            * Varia el carrito y vuelve a dibujarlo
+            */
+            function vaciarCarrito() {
+                // Limpiamos los productos guardados
+                carrito = [];
+                // Renderizamos los cambios
+                renderizarCarrito();
+                // Borra LocalStorage
+                localStorage.clear();
+
+            }
+
+            function guardarCarritoEnLocalStorage () {
+                miLocalStorage.setItem('carrito', JSON.stringify(carrito));
+            }
+
+            function cargarCarritoDeLocalStorage () {
+                // ¿Existe un carrito previo guardado en LocalStorage?
+                if (miLocalStorage.getItem('carrito') !== null) {
+                    // Carga la información
+                    carrito = JSON.parse(miLocalStorage.getItem('carrito'));
+                }
+            }
+
+            // Eventos
+            DOMbotonVaciar.addEventListener('click', vaciarCarrito);
+
+            // Inicio
+            cargarCarritoDeLocalStorage();
+            renderizarProductos();
+            renderizarCarrito();
+        });
+    </script>
+    <body>
+        <!-- Top Bar Start -->
+        <div class="top-bar">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 col-md-12">
+                        <div class="logo">
+                            <a href="index.html">
+                                <br>
+                               <h3><font color="#202C45" face="Comic sans Ms">Fereteria </font><font color="#202C45" face="arial black"> <h2>LA BODEGA</H2></font> </h3>
+                               
+                               <br>
+                                <!-- <img src="img/logo.jpg" alt="Logo"> -->
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-7 d-none d-lg-block">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="top-bar-item">
+                                    <div class="top-bar-icon">
+                                        <i class="far fa-clock"></i>
+                                    </div>
+                                    <div class="top-bar-text">
+                                        <h3>Abierto desde</h3>
+                                        <p>lun - sab 7:00 am - 5:00 pm
+                                            
+                     </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="top-bar-item">
+                                    <div class="top-bar-icon">
+                                        <i class="fa fa-phone-alt"></i>
+                                    </div>
+                                    <div class="top-bar-text">
+                                        <h3>Telefono</h3>
+                                        <p>7274-9205</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Top Bar End -->
+
+        <!-- Nav Bar Start -->
+        <div class="nav-bar">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+                    <a href="#" class="navbar-brand">MENU</a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav mr-auto">
+                            <img src="img/profile_picture_20220519212946.jpg" alt="" width="70px" height="0">
+                            <a href="#" class="nav-item nav-link active">Inicio</a>
+                            <a href="#" class="nav-item nav-link">Sobre nosotros</a>
+                            <a href="#l" class="nav-item nav-link">Servicios</a>
+         
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Cotizacion</a>
+                                <div class="dropdown-menu">
+                                    <a href="#" class="dropdown-item">MADERA</a>
+                                    <a href="#" class="dropdown-item">HIERRO</a>
+                                    <a href="#" class="dropdown-item">LAMINA</a>
+                                    <a href="#" class="dropdown-item">FONTANERIA</a>
+                                </div>
+                            </div>
+                            <a href="#l" class="nav-item nav-link">Contacto</a>
+                        </div>
+                        <div class="ml-auto">
+                            <a class="btn btn-custom" href="#"> <span>Cotizar precios</span> </a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- Nav Bar End -->
+<center>
+    <font color="#202C45" face="arial black"><h1>Inventario</h1> </font> 
+    <br>
+        <font color="#202C45" face="comic sans"><h2>Geovani Valladares</h2> </font>
+    <hr>
+
+        <!-- Carousel Start -->
+        
+        <!-- Carousel End -->
+        <div class="container">
+            <div class="row">
+                <!-- Elementos generados a partir del JSON -->
+                <main id="items" class="col-sm-8 row"></main>
+                <!-- Carrito -->
+                <aside class="col-sm-4">
+                  <strong><h2>Cotización</h2></strong> 
+                    <!-- Elementos del carrito -->
+                    <ul id="carrito" class="list-group"></ul>
+                    <hr>
+                    <!-- Precio total -->
+                    <p class="text-right"><strong>Total:</strong> <span id="total"></span>&dollar;</p>
+                    <button id="boton-vaciar" class="btn btn-danger">Vaciar</button>
+                </aside> 
+            </div>
+        </div>
+
+        <!-- About Start -->
+        
+                            
+                           
+                            
+
+
+        <!-- Team Start -->
+        
+
+        <!-- Footer Start -->
+       
+                  
+        <!-- Footer End -->
+        
+        <!-- Back to top button -->
+        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+        
+        <!-- Pre Loader -->
+        <div id="loader" class="show">
+            <div class="loader"></div>
+        </div>
+
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/easing/easing.min.js"></script>
+        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+        <script src="lib/waypoints/waypoints.min.js"></script>
+        <script src="lib/counterup/counterup.min.js"></script>
+        
+        <!-- Contact Javascript File -->
+        <script src="mail/jqBootstrapValidation.min.js"></script>
+        <script src="mail/contact.js"></script>
+
+        <!-- Template Javascript -->
+        <script src="js/main.js"></script>
+    </body>
+</html>
